@@ -3,6 +3,7 @@ import ErrorPage from "./ErrorPage.js";
 import LoadingPage from "./LoadingPage.js";
 
 import Actions from "./Actions.js";
+import { formatDate } from "../app/format.js";
 
 const row = (bill) => {
   return `
@@ -20,6 +21,7 @@ const row = (bill) => {
 };
 
 const rows = (data) => {
+  console.log(data)
   return data && data.length ? data.map((bill) => row(bill)).join("") : "";
 };
 
