@@ -39,7 +39,7 @@ export default class {
         console.log(snapshot) */
 
         /* Fix aussi le bug */
-        snapshot.sort((a, b) => (a.date < b.date ? 1 : -1));
+        /* snapshot.sort((a, b) => (a.date < b.date ? 1 : -1)); */
 
         const bills = snapshot
           .map(doc => {
