@@ -21,9 +21,13 @@ const row = (bill) => {
 };
 
 const rows = (data) => {
-  console.log(data);
-  /* data.sort((a, b) => (a.date < b.date ? 1 : -1)); */
-  return data && data.length ? data.sort((a, b) => (a.date < b.date ? 1 : -1)).map((bill) => row(bill)).join("") : "";
+  /* Fix le bug Issue 1*/
+  return data && data.length
+    ? data
+        .sort((a, b) => (a.date < b.date ? 1 : -1))
+        .map((bill) => row(bill))
+        .join("")
+    : "";
 };
 
 export default ({ data: bills, loading, error }) => {
