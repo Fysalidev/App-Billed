@@ -1,4 +1,4 @@
-const mockedBills = {
+git const mockedBills = {
   list() {
     return Promise.resolve([{
       "id": "47qAXb6fIm2zOKkLzMro",
