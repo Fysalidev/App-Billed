@@ -60,7 +60,7 @@ describe("Given I am connected as an employee", () => {
       const billsDashboard = new Bills({
         document, onNavigate, store: null, bills: bills, localStorage: window.localStorage
       })
-      
+
       /* Mock fonction JQuery */
       $.fn.modal = jest.fn();
 
@@ -78,7 +78,43 @@ describe("Given I am connected as an employee", () => {
       expect(screen.getByTestId("modal-title")).toBeTruthy();
       
     })
-  })  
+  })
+
+    describe("When employee click on new bill", () => {
+      test("Then form should be displayed", () => {
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname });
+        };
+
+        Object.defineProperty(window, "localStorage", {
+          value: localStorageMock,
+        });
+        window.localStorage.setItem(
+          "user",
+          JSON.stringify({
+            type: "Employee",
+          })
+        );
+
+        const billsDashboard = new Bills({
+          document,
+          onNavigate,
+          store: null,
+          bills: bills,
+          localStorage: window.localStorage,
+        });
+
+        const newBillBtn = screen.getByTestId("btn-new-bill");
+        const handleClickNewBill = jest.fn(billsDashboard.handleClickNewBill);
+
+        newBillBtn.addEventListener("click", handleClickNewBill);
+        userEvent.click(newBillBtn);
+
+        expect(handleClickNewBill).toHaveBeenCalled();
+        expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
+        expect(screen.getByTestId("form-new-bill")).toBeTruthy();
+      });
+    });
 })
 
 
