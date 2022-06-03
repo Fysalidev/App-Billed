@@ -26,7 +26,6 @@ describe("Given I am connected as an employee", () => {
           type: "Employee",
         })
       );
-
       const root = document.createElement("div");
       root.setAttribute("id", "root");
       document.body.append(root);
