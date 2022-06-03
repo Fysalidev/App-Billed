@@ -2,20 +2,15 @@
  * @jest-environment jsdom
  */
 
-import '@testing-library/jest-dom';
-import {
-  screen,
-  waitFor,
-  getByRole
-} from "@testing-library/dom";
-
-import userEvent from '@testing-library/user-event';
+import { getAllByTestId, getByRole, getByTestId, screen, waitFor } from "@testing-library/dom";
 import BillsUI from "../views/BillsUI.js";
+import Bills from "../containers/Bills.js"
 import { bills } from "../fixtures/bills.js";
-import { ROUTES_PATH} from "../constants/routes.js";
-import {localStorageMock} from "../__mocks__/localStorage.js";
+import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
+import { localStorageMock } from "../__mocks__/localStorage.js";
+
 import router from "../app/Router.js";
-/* import userEvent from '@testing-library/user-event'; */
+import userEvent from "@testing-library/user-event";
 
 
 describe("Given I am connected as an employee", () => {
@@ -48,8 +43,42 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
-    
   })
+
+  describe("When employee click on eye Button", () => {
+    test("Then modal should be displayed", () => {
+      
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname })
+      }
+
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }))
+
+      const billsDashboard = new Bills({
+        document, onNavigate, store: null, bills: bills, localStorage: window.localStorage
+      })
+      
+      /* Mock fonction JQuery */
+      $.fn.modal = jest.fn();
+
+      document.body.innerHTML = BillsUI({ data: { bills } })
+      
+      const iconEye = screen.getAllByTestId("btn-new-bill")[0];
+      const handleClickIconEye = jest.fn(billsDashboard.handleClickIconEye(iconEye));
+
+      iconEye.addEventListener('click', handleClickIconEye)
+      userEvent.click(iconEye)
+
+      expect(handleClickIconEye).toHaveBeenCalled()
+      expect($.fn.modal).toHaveBeenCalled()
+      expect(screen.getByTestId("modal")).toBeTruthy();
+      expect(screen.getByTestId("modal-title")).toBeTruthy();
+      
+    })
+  })  
 })
 
 
