@@ -35,32 +35,36 @@ describe("When I am on NewBill Page", () => {
     expect(Icon).toHaveClass("active-icon");
   });
 
-  test("Then I should see a form", async () => {
-    const dashboard = new NewBill({
-      document,
-      onNavigate,
-      store: mockStore,
-      localStorage: localStorageMock,
+  describe ("When I am on NewBill form", () => {
+    test("Then I add File", async () => {
+      const dashboard = new NewBill({
+        document,
+        onNavigate,
+        store: mockStore,
+        localStorage: localStorageMock,
+      });
+  
+      const handleChangeFile = jest.fn(dashboard.handleChangeFile);
+      const inputFile = screen.getByTestId("file");
+      inputFile.addEventListener("change", handleChangeFile);
+      fireEvent.change(inputFile, {
+        target: {
+          files: [
+            new File(["document.jpg"], "document.jpg", {
+              type: "document/jpg",
+            }),
+          ],
+        },
+      });
+  
+      expect(handleChangeFile).toHaveBeenCalled();
+      expect(handleChangeFile).toBeCalled();
+      expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
     });
-
-    const handleChangeFile = jest.fn(dashboard.handleChangeFile);
-    const inputFile = screen.getByTestId("file");
-    inputFile.addEventListener("change", handleChangeFile);
-    fireEvent.change(inputFile, {
-      target: {
-        files: [
-          new File(["document.pdf"], "document.pdf", {
-            type: "document/pdf",
-          }),
-        ],
-      },
-    });
-    expect(handleChangeFile).toHaveBeenCalled();
-  });
+  })
 });
 
 /* Api */
-
 describe("When I am on NewBill Page and submit the form", () => {
   beforeEach(() => {
     jest.spyOn(mockStore, "bills");
