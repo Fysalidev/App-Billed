@@ -35,8 +35,6 @@ describe("When I am on NewBill Page", () => {
     expect(Icon).toHaveClass("active-icon");
   });
 
-  /* Voir avec Mentor */
-
   test("Then I should see a form", async () => {
     const dashboard = new NewBill({
       document,

@@ -24,7 +24,8 @@ export default class NewBill {
   handleChangeFile = (e) => {
     console.log(e.target.value);
     e.preventDefault();
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
+    const file = this.document.querySelector(`input[data-testid="file"]`)
+      .files[0];
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length - 1];
     /* Fix bug Issue 3 */
@@ -54,7 +55,7 @@ export default class NewBill {
       alert("Veuillez choisir un fichier de type image");
     }
   };
-  
+
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(
@@ -85,6 +86,8 @@ export default class NewBill {
   };
 
   // not need to cover this function by tests
+  /* istanbul ignore next */
+  
   updateBill = (bill) => {
     if (this.store) {
       this.store
